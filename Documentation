@@ -1,0 +1,76 @@
+This program will do the following:
+
+1. Generate a mutant of pHLIP
+2. Create a PDB with multiple copies of this mutant (overlaid on each other)
+3. Generate a PDB with the copies randomly oriented about each other
+
+
+Requirements:
+
+You need to have VMD and Python (/usr/bin/python) installed.
+
+
+To use this program, you need to specify:
+	a. The positions of the mutations.
+	b. The 3-letter code (PRINT) of the new residues coming in at those positions.
+	   Make sure a. and b. are in order. 
+	c. Prefix for output filename of the mutant PDB file.
+	d. Number of copies you want.
+	e. Prefix for output filename of the PDB file with multiple copies.
+	f. The input PDB file. This should be in your working directory.
+	g. The top_all36_prot.prm file should be in your working directory (this is not a "specification", just a requirement).
+
+	For now, I am including the top_all36_prot.prm and the pHLIP.pdb file in the package.
+
+After running the program, you will be left with:
+	a. A PDB/PSF file of the mutant (only one copy)
+	b. A tcl script that created a.
+	c. A PSF file with multiple copies of the mutant
+	d. A PDB file where the multiple copies are overlaid on each other
+	   (suffix "-overlaid.pdb")
+	e. A tcl script that created c. and d.
+	f. A PDB file where the multiple copies are randomly oriented
+	g. A tcl script that created f.
+	h. A "RandomCoords.rnd" file that contains the orientation information.
+	   For more information, see the "RandomCoords information" below.
+
+	The PSF specified in c and the PDB specified in f are your "final" outputs.
+
+
+To use this program, do the following:
+	a. Open the file GenerateMutantsForAggregation.sh in your favorite text editor
+	b. At the top, you shall see the declaration section, asking for the inputs.
+	c. Provide the details, save and quit.
+	d. Type the following
+		./GenerateMutantsForAggregation.sh
+
+	e. Voila! You are done
+
+
+
+RandomCoords information:
+
+This file will contain n-1 lines, where n is the number of copies you specified. This is because if you have, say, 5 copies, 4 of them will be moved (the fifth could stay where it was).
+
+The first three columns of each line specify, in cartesian space, how the COM of the current copy is placed wrt the static copy. The fourth column specifies the axis about which this copy is further rotated, and the fifth column is the angle, in degrees, by which this copy is rotated.
+
+
+
+NOTE:
+
+Make sure your original PDB does not have anything except proteins.
+
+Make sure the list of mutation positions and mutation residues are separated by space. DO NOT put comma or any other separator.
+
+Make sure you have the same number of mutation positions and mutation residues. Otherwise, the program will terminate with an error.
+
+Make sure the list of mutation positions and the list of mutation residues are in order.
+
+Make sure the mutation positions you specify actually exist (don't specify a mutation at position 40 for a 36-residue peptide). The program doesn't check for this.
+
+Make sure the 3-letter code for the mutation residues matches the CHARMM residue names. This program does not check for mismatched residue names.
+
+
+The generated PDB/PSF will contain multiple copies of the molecule. Each will be a different segment. The segments will be named "A", "B", "C", etc. This means that for now we are limited to 26 copies at the most.
+
+This is obvious, but I shall still specify it. If you run the same program multiple times, the structure you generate each time will be different from each other. This is due to the randomization.
